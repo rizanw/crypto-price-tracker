@@ -4,30 +4,39 @@ import (
 	mAuth "crypto-tracker/internal/model/auth"
 	"errors"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func (u *usecase) SignUp(in mAuth.AuthRequest) (mAuth.AuthResponse, error) {
 	var (
 		res mAuth.AuthResponse
 		err error
+		now = time.Now()
 	)
 
 	if err = u.isUserExist(in.Email); err != nil {
 		return res, err
 	}
 
-	// TODO: encrypt password
-	pwd := in.Password
-
-	err = u.rDB.InsertUser(in.Email, pwd)
+	pwd, err := bcrypt.GenerateFromPassword([]byte(in.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return res, err
 	}
 
-	// TODO: generate jwt token
+	err = u.rDB.InsertUser(in.Email, string(pwd))
+	if err != nil {
+		return res, err
+	}
+
+	token, err := generateToken(in.Email, now)
+	if err != nil {
+		return res, err
+	}
+
 	res.Email = in.Email
-	res.Time = time.Now().Unix()
-	res.Token = ""
+	res.Time = now.Unix()
+	res.Token = token
 
 	return res, nil
 }
