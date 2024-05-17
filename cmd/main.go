@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	repo := newRepo()
+	repo := newRepo(dbPath)
 	uc := newUsecase(repo)
 	router := newRoutes(uc)
 
