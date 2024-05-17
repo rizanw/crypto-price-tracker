@@ -17,7 +17,7 @@ type AuthResponse struct {
 	Time  int64  `json:"time"`
 }
 
-func (r AuthRequest) Validate() error {
+func (r AuthRequest) Validate(isSignup bool, pwdConfirm string) error {
 	if r.Email == "" {
 		return errors.New("email is required")
 	}
@@ -44,6 +44,10 @@ func (r AuthRequest) Validate() error {
 	}
 	if !isContainNumber || !isContainLetter || !isContainSpecial || count < 8 {
 		return errors.New("invalid password")
+	}
+
+	if isSignup && pwdConfirm != r.Password {
+		return errors.New("invalid password confirmation")
 	}
 
 	return nil

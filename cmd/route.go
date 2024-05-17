@@ -13,7 +13,8 @@ func newRoutes(uc UseCase) *mux.Router {
 
 	// auth routes
 	handlerAuth := hAuth.New(uc.Auth)
-	router.HandleFunc("/signup", handlerAuth.Signup).Methods(http.MethodPost)
+	router.HandleFunc("/signup", handlerAuth.SignUp).Methods(http.MethodPost)
+	router.HandleFunc("/signin", handlerAuth.SignIn).Methods(http.MethodPost)
 
 	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("server OK!")
