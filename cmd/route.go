@@ -8,12 +8,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func newRoutes(uc Usecase) *mux.Router {
+func newRoutes(uc UseCase) *mux.Router {
 	router := mux.NewRouter()
 
 	// auth routes
-	handlerAuth := hAuth.New()
-	router.HandleFunc("/signup", handlerAuth.Signup).Methods(http.MethodGet)
+	handlerAuth := hAuth.New(uc.Auth)
+	router.HandleFunc("/signup", handlerAuth.Signup).Methods(http.MethodPost)
 
 	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("server OK!")

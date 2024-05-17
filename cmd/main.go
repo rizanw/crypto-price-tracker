@@ -9,7 +9,7 @@ import (
 
 func main() {
 	repo := newRepo(dbPath)
-	uc := newUsecase(repo)
+	uc := newUseCase(repo)
 	router := newRoutes(uc)
 
 	srv := http.Server{
