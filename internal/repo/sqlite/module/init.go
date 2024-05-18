@@ -22,6 +22,9 @@ func New(file string) (rDB.Sqlite, error) {
 	if _, err := db.Exec(createUsersTable); err != nil {
 		return nil, err
 	}
+	if _, err := db.Exec(createCoinsTable); err != nil {
+		return nil, err
+	}
 
 	return &sqlite{
 		db: db,
