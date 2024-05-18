@@ -61,3 +61,21 @@ To run unit test
 ```bash
 make test
 ```
+
+# Project Structure
+
+- `bin/` is directory for compiled binary
+- `cmd/` is the main program directory
+- `files/` contains app files (including db & config)
+    - `file/db` contains sqlite db directory
+    - `file/etc/crypto-tracker` contains app config files
+- `internal/` contains the whole logic of the app
+    - `internal/common` contains helper functions
+        - `internal/common/middleware` is for http middleware for client
+        - `internal/common/session` is the session manager for auth
+    - `internal/config` is the config of the app, has relation to files directory
+    - `internal/handler` is application logic interface between this app with client
+    - `internal/model` is model business design
+    - `internal/repo` is the repositories to fetch/store data of this app
+    - `internal/usecase` is main business logic
+- `go.mod` the golang dependencies list
