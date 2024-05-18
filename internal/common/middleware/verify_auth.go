@@ -39,8 +39,9 @@ func VerifyAuth(next http.Handler) http.Handler {
 		// pass session to context
 		ctx := r.Context()
 		ctx = context.WithValue(ctx, "session", s)
+		ctx = context.WithValue(ctx, "token", tokenString)
 		r = r.WithContext(ctx)
-		
+
 		next.ServeHTTP(w, r)
 	})
 }

@@ -16,9 +16,10 @@ func (h *handler) RemoveCoin(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "coin param must be filled", http.StatusBadRequest)
 		return
 	}
-	ses := ctx.Value("session").(session.Session)
-	if ses.UserID == 0 {
+	ses, ok := ctx.Value("session").(session.Session)
+	if ses.UserID == 0 || !ok {
 		http.Error(w, "user not login", http.StatusUnauthorized)
+		return
 	}
 
 	err = h.ucCoin.RemoveCoin(ses.UserID, coin)

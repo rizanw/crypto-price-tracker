@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 )
@@ -18,6 +19,8 @@ func main() {
 		WriteTimeout: timeout,
 		Handler:      router,
 	}
+
+	log.Println("app starting on ", address)
 
 	err := srv.ListenAndServe()
 	if errors.Is(err, http.ErrServerClosed) {
