@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (h *handler) AddCoin(w http.ResponseWriter, r *http.Request) {
+func (h *handler) RemoveCoin(w http.ResponseWriter, r *http.Request) {
 	var (
 		err error
 		ctx = r.Context()
@@ -21,7 +21,7 @@ func (h *handler) AddCoin(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "user not login", http.StatusUnauthorized)
 	}
 
-	err = h.ucCoin.AddCoin(ses.UserID, coin)
+	err = h.ucCoin.RemoveCoin(ses.UserID, coin)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

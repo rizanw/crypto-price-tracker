@@ -2,14 +2,10 @@ package module
 
 import "errors"
 
-func (u *usecase) AddCoin(userID int64, coin string) error {
-	rate, err := u.rCoincap.FindRate(coin)
-	if err != nil {
-		return err
-	}
-	if rate.CoinID != coin {
-		return errors.New("coin not exist")
+func (u *usecase) RemoveCoin(userID int64, coin string) error {
+	if !u.isUserCoinExist(userID, coin) {
+		return errors.New("user not found coin")
 	}
 
-	return u.rDB.InsertCoin(userID, coin)
+	return u.rDB.DeleteCoin(userID, coin)
 }
