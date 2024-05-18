@@ -2,7 +2,7 @@
 
 # Overview
 
-Backend restful API to track cryptocurrency in IDR using golang and sqlite. It has authentification using jwt token and
+Backend restful API to track cryptocurrency in IDR using golang and sqlite. It has authentication using jwt token and
 session manager. the session manager is simulated using golang hashmap variable, for large scale up in future we can
 replace it using cache or persistent storage. Crypto rates source is from https://docs.coincap.io.
 
@@ -17,7 +17,7 @@ endpoint list:
 - add coin to user (bearer token | coin)
 - remove coin to user (bearer token | coin)
 
-further endpoint description, kindly check postman colection.
+further endpoint description, kindly check postman collection.
 
 # Postman Collection
 
@@ -41,12 +41,6 @@ git clone https://github.com/rizanw/crypto-price-tracker.git
 ```
 
 To build and start the apps:
-
-- Install golang dependency:
-
-```bash 
-go mod tidy
-```
 
 - build the binaries:
 
