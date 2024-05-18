@@ -25,5 +25,5 @@ func (u *usecase) GetCoins(userID int64) (coins []mCoin.Coin, err error) {
 		})
 	}
 
-	return
+	return coins, nil
 }
