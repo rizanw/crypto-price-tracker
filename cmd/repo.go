@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto-tracker/internal/config"
 	rCoincapHttp "crypto-tracker/internal/repo/coincap/http"
 	coincapHttp "crypto-tracker/internal/repo/coincap/http/module"
 	rDB "crypto-tracker/internal/repo/sqlite"
@@ -13,8 +14,8 @@ type Repo struct {
 	coincapHttp rCoincapHttp.Repo
 }
 
-func newRepo(dbfile, coincapURL string) *Repo {
-	db, err := sqlite.New(dbfile)
+func newRepo(conf *config.Config) *Repo {
+	db, err := sqlite.New(conf.Database)
 	if err != nil {
 		log.Println("!Error init db:", err)
 		return nil
@@ -22,6 +23,6 @@ func newRepo(dbfile, coincapURL string) *Repo {
 
 	return &Repo{
 		db:          db,
-		coincapHttp: coincapHttp.New(coincapURL),
+		coincapHttp: coincapHttp.New(conf.HTTPs.CoinCap),
 	}
 }

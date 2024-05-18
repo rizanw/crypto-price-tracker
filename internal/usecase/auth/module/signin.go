@@ -20,12 +20,15 @@ func (u *usecase) SignIn(in mAuth.AuthRequest) (mAuth.AuthResponse, error) {
 	if err != nil {
 		return res, err
 	}
+	if user.UserID == 0 {
+		return res, errors.New("user not register")
+	}
 
 	if err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(in.Password)); err != nil {
 		return res, errors.New("invalid password")
 	}
 
-	token, err := generateToken(session.Session{
+	token, err := u.generateToken(session.Session{
 		UserID: user.UserID,
 		Email:  user.Email,
 		Expiry: now.Add(24 * time.Hour).Unix(),

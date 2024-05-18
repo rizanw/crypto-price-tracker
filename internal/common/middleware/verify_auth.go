@@ -2,15 +2,15 @@ package middleware
 
 import (
 	"context"
-	"crypto-tracker/internal/common/constants"
 	"crypto-tracker/internal/common/session"
+	"crypto-tracker/internal/config"
 	"fmt"
 	"net/http"
 
 	"github.com/golang-jwt/jwt"
 )
 
-func VerifyAuth(next http.Handler) http.Handler {
+func VerifyAuth(conf *config.JWTConfig, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		// get auth token from header
@@ -23,7 +23,7 @@ func VerifyAuth(next http.Handler) http.Handler {
 		tokenString = tokenString[len("Bearer "):]
 
 		// verify jwt token
-		err := verifyToken(tokenString)
+		err := verifyToken(tokenString, conf)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
@@ -46,9 +46,9 @@ func VerifyAuth(next http.Handler) http.Handler {
 	})
 }
 
-func verifyToken(tokenString string) error {
+func verifyToken(tokenString string, conf *config.JWTConfig) error {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return constants.JWTSecretKey, nil
+		return conf.Secret, nil
 	})
 	if err != nil {
 		return err

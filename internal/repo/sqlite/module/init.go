@@ -1,6 +1,7 @@
 package module
 
 import (
+	"crypto-tracker/internal/config"
 	rDB "crypto-tracker/internal/repo/sqlite"
 	"database/sql"
 	"sync"
@@ -13,8 +14,8 @@ type sqlite struct {
 	db *sql.DB
 }
 
-func New(file string) (rDB.Sqlite, error) {
-	db, err := sql.Open("sqlite3", file)
+func New(conf config.SqliteConfig) (rDB.Sqlite, error) {
+	db, err := sql.Open("sqlite3", conf.Path)
 	if err != nil {
 		return nil, err
 	}

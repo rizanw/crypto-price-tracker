@@ -33,3 +33,6 @@ go.work.sum
 # macos
 .DS_Store
 vendor/
+
+# go build
+bin/*

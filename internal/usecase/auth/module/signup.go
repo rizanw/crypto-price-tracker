@@ -30,7 +30,7 @@ func (u *usecase) SignUp(in mAuth.AuthRequest) (mAuth.AuthResponse, error) {
 		return res, err
 	}
 
-	token, err := generateToken(session.Session{
+	token, err := u.generateToken(session.Session{
 		UserID: userID,
 		Email:  in.Email,
 		Expiry: now.Add(24 * time.Hour).Unix(),

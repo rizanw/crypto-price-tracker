@@ -1,13 +1,19 @@
 package module
 
-import coincapHttp "crypto-tracker/internal/repo/coincap/http"
+import (
+	"crypto-tracker/internal/config"
+	coincapHttp "crypto-tracker/internal/repo/coincap/http"
+	"fmt"
+)
 
 type repo struct {
-	url string
+	url  string
+	conf config.HTTP
 }
 
-func New(url string) coincapHttp.Repo {
+func New(conf config.HTTP) coincapHttp.Repo {
 	return &repo{
-		url: url,
+		url:  fmt.Sprintf("%s/v2", conf.Address),
+		conf: conf,
 	}
 }
