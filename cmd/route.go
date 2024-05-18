@@ -20,6 +20,7 @@ func newRoutes(uc UseCase) *mux.Router {
 
 	// coin routes
 	handlerCoin := hCoin.New(uc.Coin)
+	router.Handle("/coins", middleware.VerifyAuth(http.HandlerFunc(handlerCoin.GetCoins))).Methods(http.MethodGet)
 	router.Handle("/coin/add", middleware.VerifyAuth(http.HandlerFunc(handlerCoin.AddCoin))).Methods(http.MethodPost)
 	router.Handle("/coin/remove", middleware.VerifyAuth(http.HandlerFunc(handlerCoin.RemoveCoin))).Methods(http.MethodPut)
 
