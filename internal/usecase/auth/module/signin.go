@@ -1,6 +1,7 @@
 package module
 
 import (
+	"crypto-tracker/internal/common/session"
 	mAuth "crypto-tracker/internal/model/auth"
 	"errors"
 	"time"
@@ -24,7 +25,11 @@ func (u *usecase) SignIn(in mAuth.AuthRequest) (mAuth.AuthResponse, error) {
 		return res, errors.New("invalid password")
 	}
 
-	token, err := generateToken(in.Email, now)
+	token, err := generateToken(session.Session{
+		UserID: user.UserID,
+		Email:  user.Email,
+		Expiry: now.Add(24 * time.Hour).Unix(),
+	})
 	if err != nil {
 		return res, err
 	}

@@ -1,18 +1,24 @@
 package module
 
 import (
-	"time"
+	"crypto-tracker/internal/common/constants"
+	"crypto-tracker/internal/common/session"
 
 	"github.com/golang-jwt/jwt"
 )
 
-var secretKey = []byte("secret-key")
-
-func generateToken(email string, tm time.Time) (string, error) {
+func generateToken(s session.Session) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"email": email,
-		"exp":   tm.Add(time.Hour * 24).Unix(),
+		"user_id": s.UserID,
+		"email":   s.Email,
+		"exp":     s.Expiry,
 	})
 
-	return token.SignedString(secretKey)
+	signedToken, err := token.SignedString(constants.JWTSecretKey)
+	if err != nil {
+		return "", err
+	}
+
+	session.Sessions[signedToken] = s
+	return signedToken, nil
 }

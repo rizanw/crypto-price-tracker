@@ -1,6 +1,7 @@
 package module
 
 import (
+	"crypto-tracker/internal/common/session"
 	mAuth "crypto-tracker/internal/model/auth"
 	"errors"
 	"time"
@@ -24,12 +25,16 @@ func (u *usecase) SignUp(in mAuth.AuthRequest) (mAuth.AuthResponse, error) {
 		return res, err
 	}
 
-	err = u.rDB.InsertUser(in.Email, string(pwd))
+	userID, err := u.rDB.InsertUser(in.Email, string(pwd))
 	if err != nil {
 		return res, err
 	}
 
-	token, err := generateToken(in.Email, now)
+	token, err := generateToken(session.Session{
+		UserID: userID,
+		Email:  in.Email,
+		Expiry: now.Add(24 * time.Hour).Unix(),
+	})
 	if err != nil {
 		return res, err
 	}

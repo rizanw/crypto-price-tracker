@@ -1,7 +1,7 @@
 package module
 
 const (
-	qInsertUser = `INSERT INTO users VALUES(NULL,?,?);`
+	qInsertUser = `INSERT INTO users VALUES(NULL,?,?) RETURNING id;`
 
 	qFindUser = `SELECT * FROM users WHERE email=?;`
 

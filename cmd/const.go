@@ -8,5 +8,5 @@ const (
 
 	dbPath string = "db/database.db"
 
-	coincapURL string = "https://api.coincap.io/v2/"
+	coincapURL string = "https://api.coincap.io/v2"
 )

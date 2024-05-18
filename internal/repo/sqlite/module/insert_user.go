@@ -1,10 +1,10 @@
 package module
 
-func (r *sqlite) InsertUser(email, password string) error {
-	_, err := r.db.Exec(qInsertUser, email, password)
+func (r *sqlite) InsertUser(email, password string) (userID int64, err error) {
+	err = r.db.QueryRow(qInsertUser, email, password).Scan(&userID)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	return nil
+	return userID, nil
 }

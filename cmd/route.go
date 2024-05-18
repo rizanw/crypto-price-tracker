@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto-tracker/internal/common/middleware"
 	hAuth "crypto-tracker/internal/handler/http/auth/module"
 	hCoin "crypto-tracker/internal/handler/http/coin/module"
 	"log"
@@ -19,7 +20,7 @@ func newRoutes(uc UseCase) *mux.Router {
 
 	// coin routes
 	handlerCoin := hCoin.New(uc.Coin)
-	router.HandleFunc("/coin/add", handlerCoin.AddCoin).Methods(http.MethodPost)
+	router.Handle("/coin/add", middleware.VerifyAuth(http.HandlerFunc(handlerCoin.AddCoin))).Methods(http.MethodPost)
 
 	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("server OK!")
